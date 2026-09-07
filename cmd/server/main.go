@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/DeepSystems/deepfs/internal/api"
+	"github.com/DeepSystems/deepfs/internal/api/config"
 	"github.com/DeepSystems/deepfs/internal/database"
 	"github.com/joho/godotenv"
 )
@@ -16,6 +17,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err, ", error loading env")
 	}
+	config.GoogleAuthConfig()
 	db , err := database.ConnectDB()
 	if err != nil {
 		log.Fatal(err)
@@ -31,6 +33,5 @@ func main() {
 	err=server.ListenAndServe()
 	if err != nil {
 		log.Fatalf("Error %v" , err)
-	}
-	
+	}	
 }

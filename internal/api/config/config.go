@@ -1,10 +1,8 @@
 package config
 
 import (
-	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -15,11 +13,6 @@ type config struct{
 
 var AppConfig config
 func GoogleAuthConfig() oauth2.Config{
-	err:= godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
-	}
-
 	AppConfig.GoogleLoginConfig = oauth2.Config{
 		RedirectURL: 	os.Getenv("GOOGLE_AUTH_REDIRECT_URL"),
 		ClientID: 		os.Getenv("GOOGLE_CLIENT_ID"),
@@ -28,6 +21,5 @@ func GoogleAuthConfig() oauth2.Config{
             			"https://www.googleapis.com/auth/userinfo.profile"},
         Endpoint: 		google.Endpoint,
 	}
-
 	return AppConfig.GoogleLoginConfig
 }
