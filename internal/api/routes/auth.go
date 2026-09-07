@@ -8,4 +8,5 @@ import (
 
 func AuthRoutes(mux *http.ServeMux ){
 	mux.HandleFunc("GET /google_login", handlers.GoogleLogin)
+	mux.HandleFunc("GET /google_callback", handlers.GoogleCallBack)
 }
