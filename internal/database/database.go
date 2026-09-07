@@ -12,8 +12,6 @@ import (
 
 func  ConnectDB()(* sql.DB , error){
 	connStr:= os.Getenv("DATABASE_URI")
-
-	fmt.Println("conn string - ", connStr)
 	db , err:=sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
@@ -27,6 +25,5 @@ func  ConnectDB()(* sql.DB , error){
 		log.Fatal(err)
 		return nil , err
 	}
-
 	return  db , nil
 }

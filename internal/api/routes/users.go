@@ -7,5 +7,5 @@ import (
 )
 
 func RegisterUsersRoute(mux *http.ServeMux){
-	mux.HandleFunc("GET users",handlers.GetUsers)
+	mux.HandleFunc("GET /users",handlers.GetUsers)
 }

@@ -10,5 +10,7 @@ func Router() *http.ServeMux{
 	mux:= http.NewServeMux();
 
 	routes.RegisterUsersRoute(mux)
+	routes.AuthRoutes(mux)
+	
 	return mux
 }
