@@ -6,17 +6,19 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
+	"time"
 
 	"github.com/DeepSystems/deepfs/internal/api/config"
+	"github.com/DeepSystems/deepfs/internal/api/dto"
+	"github.com/DeepSystems/deepfs/internal/api/service"
 )
 
 func generateRandomState(len int)(string, error){
 	b:= make([]byte, len)
 	_ , err:= rand.Read(b)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	return base64.URLEncoding.EncodeToString(b), nil
@@ -26,6 +28,7 @@ func GoogleLogin(w http.ResponseWriter , r * http.Request){
 	rstate, err := generateRandomState(32)
 	if err != nil {
 		http.Error(w, "State generation faoiled!!", http.StatusInternalServerError)
+		return
 	}
 
 	// save crypto state in httponly cookie
@@ -46,7 +49,7 @@ func GoogleLogin(w http.ResponseWriter , r * http.Request){
 
 func GoogleCallBack(w http.ResponseWriter, r *http.Request){
 	state:= r.URL.Query().Get("state")
-	cookie, err:= r.Cookie("state")
+	cookie, err:= r.Cookie("oauth_state")
 	if err != nil || state != cookie.Value {
 		http.Error(w , "State mismatch or cookie expired !!",  http.StatusBadRequest)
 		return
@@ -55,7 +58,7 @@ func GoogleCallBack(w http.ResponseWriter, r *http.Request){
 	http.SetCookie(w, &http.Cookie{Name: "oauth_state", Value: "", Path: "/", MaxAge: -1})
 
 	code:= r.URL.Query().Get("code")
-	googlecon:=config.GoogleAuthConfig()
+	googlecon:=config.AppConfig.GoogleLoginConfig
 	token, err:=googlecon.Exchange(context.Background() , code)
 	if err != nil {
 		http.Error(w , "Code exchane failed !!",  http.StatusBadRequest)
@@ -68,14 +71,34 @@ func GoogleCallBack(w http.ResponseWriter, r *http.Request){
 	}
 	defer res.Body.Close()
 
-	userData, err:=io.ReadAll(res.Body)
-
+	var userData dto.User
+	err= json.NewDecoder(res.Body).Decode(&userData)
 	if err != nil{
 		http.Error(w , "User Data reading failed !!",  http.StatusBadRequest)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusFailedDependency)
-	json.NewEncoder(w).Encode(userData)
+	jwtToken, err:= service.GeneRateJwt(userData)
+	if err != nil {
+		http.Error(w, "jwt token generation failed !! / server error", http.StatusInternalServerError)
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name: "auth_token",
+		Value: jwtToken,
+		Expires: time.Now().Add(24 * time.Hour),
+		Path: "/",
+		HttpOnly: true,
+		Secure: false,
+		SameSite: http.SameSiteLaxMode,
+	})
+	w.Write([]byte("Logedin successfully ! , cookie set successfully"))
+	// response:= &dto.AuthResponseDto{
+	// 	User: userData,
+	// 	Message: "User Signin successfully!!",
+	// }
+	// fmt.Printf("userdata %v\n", userData)
+	// w.Header().Set("Content-Type", "application/json")
+	// w.WriteHeader(http.StatusOK)
+	// json.NewEncoder(w).Encode(response)
 }

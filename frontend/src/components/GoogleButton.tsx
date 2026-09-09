@@ -8,7 +8,7 @@ type Props = {
 export default function GoogleButton({ label = 'Continue with Google', href = '/auth/google', className = '' }: Props) {
   const onClick = () => {
     // navigate to backend OAuth endpoint
-    window.location.href = href
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}${href}`
   }
 
   return (

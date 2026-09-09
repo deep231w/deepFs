@@ -55,7 +55,7 @@ export default function SignIn(): React.JSX.Element {
           <Button type="submit" variant="primary">
             Sign In
           </Button>
-          <GoogleButton label="Sign in with Google" href="/auth/google" />
+          <GoogleButton label="Sign in with Google" href="/google_login"/>
         </div>
       </form>
     </AuthCard>

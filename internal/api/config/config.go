@@ -7,11 +7,11 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
-type config struct{
+type Config struct{
 	GoogleLoginConfig oauth2.Config
 }
 
-var AppConfig config
+var AppConfig Config
 func GoogleAuthConfig() oauth2.Config{
 	AppConfig.GoogleLoginConfig = oauth2.Config{
 		RedirectURL: 	os.Getenv("GOOGLE_AUTH_REDIRECT_URL"),
