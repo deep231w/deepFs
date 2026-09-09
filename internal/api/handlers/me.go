@@ -1,6 +1,22 @@
 package handlers
 
-import "net/http"
-func VerifyMe(w http.ResponseWriter, r *http.Request){
-	
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/DeepSystems/deepfs/internal/api/service"
+)
+
+func Me(w http.ResponseWriter, r *http.Request){
+	jwtToken, err:= r.Cookie("auth_token")
+	if err != nil{
+		fmt.Println("COOKIE ERROR:", err)
+		http.Error(w,"Unauthorised no tkoen found", http.StatusUnauthorized)
+		return
+	}
+	claims, err:=service.VerifyJwt(jwtToken.Value)
+	if err != nil {
+		http.Error(w, "Token Verification failed / token expired" , http.StatusUnauthorized)
+	}
+
 }

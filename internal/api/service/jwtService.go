@@ -11,7 +11,7 @@ import (
 )
 
 type userClaims struct{
-	user dto.User
+	User dto.User `json:"user"`
 	jwt.RegisteredClaims
 }
 
@@ -19,7 +19,7 @@ var jwtKey = os.Getenv("JWT_SECRET")
 
 func GeneRateJwt(user dto.User)(string , error){
 	claims:= userClaims{
-		user: user,
+		User: user,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt: jwt.NewNumericDate(time.Now()),
