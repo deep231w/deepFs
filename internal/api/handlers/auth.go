@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -72,20 +73,32 @@ func GoogleCallBack(w http.ResponseWriter, r *http.Request , db *sql.DB){
 	}
 	defer res.Body.Close()
 
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		http.Error(w, "Failed reading Google response", http.StatusBadRequest)
+		return
+	}
+
 	var userData dto.User
-	err= json.NewDecoder(res.Body).Decode(&userData)
+	err = json.Unmarshal(body, &userData)
 	if err != nil{
 		http.Error(w , "User Data reading failed !!",  http.StatusBadRequest)
 		return
 	}
 
-	sqlSatatement := `INSERT INTO users (name,email,picture,verified_email) VALUES ($1,$2,$3,$4)`
-	result,err:=db.Exec(sqlSatatement , userData)
-	fmt.Println("insert into db result:= ",result)
+	sqlSatatement := `INSERT INTO users (name,email,picture,verified_email) VALUES ($1,$2,$3,$4) ON CONFLICT (email) DO NOTHING`
+	result,err:=db.Exec(sqlSatatement , userData.Name,userData.Email,userData.Picture,userData.VerifiedEmail)
 
+	fmt.Println("insert into db result:= ",result)
+	if err != nil{
+		http.Error(w, "Inserting / skipping into db failed ", http.StatusInternalServerError)
+		return
+	}
 	jwtToken, err:= service.GeneRateJwt(userData)
 	if err != nil {
 		http.Error(w, "jwt token generation failed !! / server error", http.StatusInternalServerError)
+		return
 	}
 
 	http.SetCookie(w, &http.Cookie{

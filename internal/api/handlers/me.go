@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -19,4 +20,7 @@ func Me(w http.ResponseWriter, r *http.Request){
 		http.Error(w, "Token Verification failed / token expired" , http.StatusUnauthorized)
 	}
 
+	w.Header().Set("Content-Type","application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(claims)
 }

@@ -15,9 +15,11 @@ type userClaims struct{
 	jwt.RegisteredClaims
 }
 
-var jwtKey = os.Getenv("JWT_SECRET")
-
 func GeneRateJwt(user dto.User)(string , error){
+	jwtKey := os.Getenv("JWT_SECRET")
+	if jwtKey == ""{
+		return "" , fmt.Errorf("NO secret key given")
+	}
 	claims:= userClaims{
 		User: user,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -28,8 +30,7 @@ func GeneRateJwt(user dto.User)(string , error){
 	}
 
 	token:=jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	tokenString, err:=token.SignedString(jwtKey)
+	tokenString, err:=token.SignedString([]byte(jwtKey))
 	if err != nil {
 		return "" , err
 	}
@@ -38,6 +39,7 @@ func GeneRateJwt(user dto.User)(string , error){
 }
 
 func VerifyJwt(tokenString string)(*userClaims, error){
+	jwtKey := os.Getenv("JWT_SECRET")
 	// Parse the token using the custom claims structure
 	token, err := jwt.ParseWithClaims(tokenString, &userClaims{}, func(token *jwt.Token) (interface{}, error) {
 		// Ensure the signing method is what we expect (HMAC / HS256)
