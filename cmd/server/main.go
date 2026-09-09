@@ -23,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
-	router:= api.Router()
+	router:= api.Router(db)
 	server :=  &http.Server{
 		Addr: ":8080",
 		Handler: router,

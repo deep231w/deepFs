@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"crypto/rand"
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -47,7 +48,7 @@ func GoogleLogin(w http.ResponseWriter , r * http.Request){
 	http.Redirect(w , r , url , http.StatusTemporaryRedirect)
 }
 
-func GoogleCallBack(w http.ResponseWriter, r *http.Request){
+func GoogleCallBack(w http.ResponseWriter, r *http.Request , db *sql.DB){
 	state:= r.URL.Query().Get("state")
 	cookie, err:= r.Cookie("oauth_state")
 	if err != nil || state != cookie.Value {
@@ -77,6 +78,10 @@ func GoogleCallBack(w http.ResponseWriter, r *http.Request){
 		http.Error(w , "User Data reading failed !!",  http.StatusBadRequest)
 		return
 	}
+
+	sqlSatatement := `INSERT INTO users (name,email,picture,verified_email) VALUES ($1,$2,$3,$4)`
+	result,err:=db.Exec(sqlSatatement , userData)
+	fmt.Println("insert into db result:= ",result)
 
 	jwtToken, err:= service.GeneRateJwt(userData)
 	if err != nil {
