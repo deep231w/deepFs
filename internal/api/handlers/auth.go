@@ -110,13 +110,5 @@ func GoogleCallBack(w http.ResponseWriter, r *http.Request , db *sql.DB){
 		Secure: false,
 		SameSite: http.SameSiteLaxMode,
 	})
-	w.Write([]byte("Logedin successfully ! , cookie set successfully"))
-	// response:= &dto.AuthResponseDto{
-	// 	User: userData,
-	// 	Message: "User Signin successfully!!",
-	// }
-	// fmt.Printf("userdata %v\n", userData)
-	// w.Header().Set("Content-Type", "application/json")
-	// w.WriteHeader(http.StatusOK)
-	// json.NewEncoder(w).Encode(response)
+	http.Redirect(w,r,"http://localhost:5173/dashboard",http.StatusTemporaryRedirect)
 }

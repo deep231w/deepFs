@@ -11,6 +11,29 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func CORSMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 1. Explicitly allow your frontend domain (DO NOT use "*" if sending cookies)
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		
+		// 2. Allow credentials (required since your OAuth flow sets a cookie)
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		
+		// 3. Define allowed methods and headers
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// 4. Handle preflight (OPTIONS) requests immediately
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Pass down to the actual handler
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	fmt.Println("DeepFS Server")
 	err:= godotenv.Load()
@@ -26,7 +49,7 @@ func main() {
 	router:= api.Router(db)
 	server :=  &http.Server{
 		Addr: ":8080",
-		Handler: router,
+		Handler: CORSMiddleware(router),
 	}
 
 	fmt.Println("Server started at port: 8080")

@@ -18,6 +18,7 @@ func Me(w http.ResponseWriter, r *http.Request){
 	claims, err:=service.VerifyJwt(jwtToken.Value)
 	if err != nil {
 		http.Error(w, "Token Verification failed / token expired" , http.StatusUnauthorized)
+		return
 	}
 
 	w.Header().Set("Content-Type","application/json")
