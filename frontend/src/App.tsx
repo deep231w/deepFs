@@ -3,11 +3,8 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
+import Dashboard from './pages/Dashboard'
 import type React from 'react'
-
-function Dashboard() {
-  return <div className="p-6">Welcome to Dashboard</div>
-}
 
 function ProtectedRoute({ children, isAuthenticated, isLoading }: { children: React.JSX.Element, isAuthenticated: boolean, isLoading: boolean }) {
   if (isLoading) {
