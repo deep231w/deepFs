@@ -1,8 +1,7 @@
 import './App.css'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
+import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 import type React from 'react'
 
@@ -52,8 +51,7 @@ function App() {
     <main>
       <Routes>
         <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}><Dashboard /></ProtectedRoute>} />
-        <Route path="/signin" element={<PublicRoute isAuthenticated={isAuthenticated} isLoading={isLoading}><SignIn /></PublicRoute>} />
-        <Route path="/signup" element={<PublicRoute isAuthenticated={isAuthenticated} isLoading={isLoading}><SignUp /></PublicRoute>} />
+        <Route path="/signin" element={<PublicRoute isAuthenticated={isAuthenticated} isLoading={isLoading}><Auth /></PublicRoute>} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </main>

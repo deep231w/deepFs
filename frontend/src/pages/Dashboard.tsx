@@ -43,7 +43,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-[#f6f1ea] text-slate-900">
       {/* Sidebar */}
       <Sidebar
         sidebarOpen={sidebarOpen}
@@ -60,11 +60,11 @@ export default function Dashboard() {
         <DashboardHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Scrollable Content */}
-        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6 md:py-8">
+        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6 md:py-8 bg-[radial-gradient(circle_at_top_left,rgba(17,24,39,0.04),transparent_35%)]">
           {/* Overview Tab */}
           {activeTab === 'overview' && (
-            <div className="animate-fade-in">
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 md:mb-8">Welcome to Your Dashboard</h2>
+            <div className="animate-fade-in max-w-6xl">
+              <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-900 mb-6 md:mb-8">Storage overview</h2>
               <StatsGrid />
               <StorageProgress />
               <QuickActions />
@@ -73,16 +73,16 @@ export default function Dashboard() {
 
           {/* Storage Tab */}
           {activeTab === 'storage' && (
-            <div className="animate-fade-in">
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 md:mb-8">Manage Storage</h2>
+            <div className="animate-fade-in max-w-6xl">
+              <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-900 mb-6 md:mb-8">Manage storage</h2>
               <StorageManagement />
             </div>
           )}
 
           {/* Settings Tab */}
           {activeTab === 'settings' && (
-            <div className="animate-fade-in">
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-6 md:mb-8">Settings</h2>
+            <div className="animate-fade-in max-w-4xl">
+              <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-900 mb-6 md:mb-8">Settings</h2>
               <SettingsTab />
             </div>
           )}
@@ -92,7 +92,7 @@ export default function Dashboard() {
       {/* Mobile Overlay when sidebar is open */}
       {sidebarOpen && isMobile && (
         <div
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-black/20 z-40"
           onClick={() => setSidebarOpen(false)}
         />
       )}
