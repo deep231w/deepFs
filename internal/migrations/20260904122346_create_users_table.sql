@@ -1,6 +1,6 @@
 -- +goose Up
 CREATE TABLE IF NOT EXISTS users (
-    id              SERIAL NOT NULL PRIMARY KEY ,
+    id              SERIAL PRIMARY KEY ,
     name            VARCHAR(20) NOT NULL,
     email           VARCHAR(255) NOT NULL UNIQUE,
     picture         TEXT,
@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- +goose Down
-DROP TABLE users;
+DROP TABLE IF EXISTS users;
