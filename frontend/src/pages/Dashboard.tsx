@@ -7,6 +7,7 @@ import StorageProgress from '../components/StorageProgress'
 import QuickActions from '../components/QuickActions'
 import StorageManagement from '../components/StorageManagement'
 import SettingsTab from '../components/SettingsTab'
+import axios from 'axios'
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -36,9 +37,8 @@ export default function Dashboard() {
     }
   }
 
-  const handleLogout = () => {
-    document.cookie = 'session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
-    document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  const handleLogout = async() => {
+    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/logout`,{},{withCredentials:true})
     navigate('/signin')
   }
 

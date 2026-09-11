@@ -13,6 +13,6 @@ func Router(db *sql.DB) *http.ServeMux{
 	routes.RegisterUsersRoute(mux)
 	routes.AuthRoutes(mux , db)
 	routes.Me(mux)
-
+	routes.LogOut(mux)
 	return mux
 }
