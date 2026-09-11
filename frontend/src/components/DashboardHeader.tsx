@@ -8,7 +8,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   return (
     <header className="bg-[#f9f7f4]/80 border-b border-slate-200 px-4 md:px-6 py-4 md:py-5 flex items-center justify-between gap-4 md:gap-5 backdrop-blur-sm">
       <button
-        className="lg:hidden flex items-center justify-center text-slate-900 hover:bg-slate-200 p-2 rounded-lg transition-colors"
+        className="lg:hidden flex items-center justify-center text-slate-700 hover:bg-slate-200 p-2 rounded-lg transition-colors"
         onClick={onMenuClick}
       >
         <Menu size={22} />
@@ -16,7 +16,7 @@ export default function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
 
       <div>
         <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500">workspace</p>
-        <h1 className="text-xl md:text-2xl font-semibold tracking-[-0.05em] text-slate-950 truncate">deepFs</h1>
+        <h1 className="text-xl md:text-2xl font-semibold tracking-[-0.05em] text-slate-800 truncate">deepFs</h1>
       </div>
 
       <div className="flex gap-2 md:gap-3">

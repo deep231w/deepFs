@@ -43,7 +43,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-[#f6f1ea] text-slate-900">
+    <div className="flex h-screen bg-[#f5f1ea] text-slate-700">
       {/* Sidebar */}
       <Sidebar
         sidebarOpen={sidebarOpen}
@@ -60,32 +60,34 @@ export default function Dashboard() {
         <DashboardHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Scrollable Content */}
-        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6 md:py-8 bg-[radial-gradient(circle_at_top_left,rgba(17,24,39,0.04),transparent_35%)]">
-          {/* Overview Tab */}
-          {activeTab === 'overview' && (
-            <div className="animate-fade-in max-w-6xl">
-              <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-900 mb-6 md:mb-8">Storage overview</h2>
-              <StatsGrid />
-              <StorageProgress />
-              <QuickActions />
-            </div>
-          )}
+        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6 md:py-8 bg-[#f5f1ea]">
+          <div className="mx-auto w-full max-w-[1500px]">
+            {/* Overview Tab */}
+            {activeTab === 'overview' && (
+              <div className="animate-fade-in w-full rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_16px_36px_rgba(15,23,42,0.04)] md:p-7">
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-800 mb-6 md:mb-8">Storage overview</h2>
+                <StatsGrid />
+                <StorageProgress />
+                <QuickActions />
+              </div>
+            )}
 
-          {/* Storage Tab */}
-          {activeTab === 'storage' && (
-            <div className="animate-fade-in max-w-6xl">
-              <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-900 mb-6 md:mb-8">Manage storage</h2>
-              <StorageManagement />
-            </div>
-          )}
+            {/* Storage Tab */}
+            {activeTab === 'storage' && (
+              <div className="animate-fade-in w-full rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_16px_36px_rgba(15,23,42,0.04)] md:p-7">
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-800 mb-6 md:mb-8">Manage storage</h2>
+                <StorageManagement />
+              </div>
+            )}
 
-          {/* Settings Tab */}
-          {activeTab === 'settings' && (
-            <div className="animate-fade-in max-w-4xl">
-              <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-900 mb-6 md:mb-8">Settings</h2>
-              <SettingsTab />
-            </div>
-          )}
+            {/* Settings Tab */}
+            {activeTab === 'settings' && (
+              <div className="animate-fade-in mx-auto w-full max-w-[1100px] rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_16px_36px_rgba(15,23,42,0.04)] md:p-7">
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-800 mb-6 md:mb-8">Settings</h2>
+                <SettingsTab />
+              </div>
+            )}
+          </div>
         </main>
       </div>
 

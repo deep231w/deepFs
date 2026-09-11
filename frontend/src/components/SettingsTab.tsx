@@ -1,6 +1,6 @@
 export default function Settings() {
   return (
-    <div className="max-w-2xl space-y-6 md:space-y-8">
+    <div className="w-full space-y-6 md:space-y-8">
       {/* Account Settings */}
       <div className="bg-white rounded-2xl shadow-[0_12px_30px_rgba(15,23,42,0.04)] border border-slate-200 p-4 md:p-6">
         <h3 className="text-lg font-semibold tracking-[-0.04em] text-slate-900 mb-4 md:mb-5">Account settings</h3>
