@@ -80,22 +80,52 @@ func GoogleCallBack(w http.ResponseWriter, r *http.Request , db *sql.DB){
 		return
 	}
 
-	var userData dto.User
-	err = json.Unmarshal(body, &userData)
+	var retrivedGoogleUserData dto.RetrivedGoogleUserData
+	err = json.Unmarshal(body, &retrivedGoogleUserData)
 	if err != nil{
 		http.Error(w , "User Data reading failed !!",  http.StatusBadRequest)
 		return
 	}
 
-	sqlSatatement := `INSERT INTO users (name,email,picture,verified_email) VALUES ($1,$2,$3,$4) ON CONFLICT (email) DO NOTHING`
-	result,err:=db.Exec(sqlSatatement , userData.Name,userData.Email,userData.Picture,userData.VerifiedEmail)
+	sqlSatatement := `
+		INSERT INTO users (
+			name,
+			email,
+			picture,
+			verified_email,
+			google_id
+		) VALUES ($1,$2,$3,$4,$5) 
+		ON CONFLICT (email)
+		DO UPDATE SET
+			name = EXCLUDED.name,
+			picture = EXCLUDED.picture,
+			verified_email = EXCLUDED.verified_email,
+			google_id = EXCLUDED.google_id
+		RETURNING id, name, email, picture, verified_email, google_id, created_at
+		`
+	var user dto.User
+	err=db.QueryRow(
+		sqlSatatement, 
+		retrivedGoogleUserData.Name, 
+		retrivedGoogleUserData.Email, 
+		retrivedGoogleUserData.Picture, 
+		retrivedGoogleUserData.VerifiedEmail, 
+		retrivedGoogleUserData.ID,
+	).Scan(
+		&user.ID,
+		&user.Name,
+		&user.Email,
+		&user.Picture,
+		&user.VerifiedEmail,
+		&user.Google_id,
+		&user.CreatedAt,
+	)
 
-	fmt.Println("insert into db result:= ",result)
 	if err != nil{
 		http.Error(w, "Inserting / skipping into db failed ", http.StatusInternalServerError)
 		return
 	}
-	jwtToken, err:= service.GeneRateJwt(userData)
+	jwtToken, err:= service.GeneRateJwt(user.ID)
 	if err != nil {
 		http.Error(w, "jwt token generation failed !! / server error", http.StatusInternalServerError)
 		return

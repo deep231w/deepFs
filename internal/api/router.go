@@ -14,5 +14,6 @@ func Router(db *sql.DB) *http.ServeMux{
 	routes.AuthRoutes(mux , db)
 	routes.Me(mux)
 	routes.LogOut(mux)
+	routes.AddGoogleAccount(mux)
 	return mux
 }

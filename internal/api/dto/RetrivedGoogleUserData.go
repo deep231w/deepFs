@@ -1,11 +1,9 @@
 package dto
 
-type User struct{
+type RetrivedGoogleUserData struct{
 	ID				string 	`json:"id"`
-	Google_id		string	`json:"google_id"`
   	Email 			string 	`json:"email"`
   	VerifiedEmail 	bool 	`json:"verified_email"`
   	Name 			string 	`json:"name"`
   	Picture 		string 	`json:"picture"`
-	CreatedAt 		string 	`json:"created_at"`
 }

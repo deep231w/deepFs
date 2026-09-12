@@ -60,7 +60,7 @@ export default function Dashboard() {
         <DashboardHeader onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Scrollable Content */}
-        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6 md:py-8 bg-[#f5f1ea]">
+        <main className="flex-1 overflow-y-auto bg-[#f5f1ea] px-3 py-2 md:px-4 md:py-3">
           <div className="mx-auto w-full max-w-[1500px]">
             {/* Overview Tab */}
             {activeTab === 'overview' && (
@@ -82,8 +82,8 @@ export default function Dashboard() {
 
             {/* Settings Tab */}
             {activeTab === 'settings' && (
-              <div className="animate-fade-in mx-auto w-full max-w-[1100px] rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_16px_36px_rgba(15,23,42,0.04)] md:p-7">
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-[-0.05em] text-slate-800 mb-6 md:mb-8">Settings</h2>
+              <div className="animate-fade-in mx-auto w-full max-w-[880px] rounded-none border-0 bg-transparent p-0 shadow-none">
+                <h2 className="mb-3 text-2xl font-semibold tracking-[-0.05em] text-slate-800 md:mb-4 md:text-3xl">Settings</h2>
                 <SettingsTab />
               </div>
             )}

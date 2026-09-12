@@ -5,23 +5,21 @@ import (
 	"fmt"
 	"os"
 	"time"
-
-	"github.com/DeepSystems/deepfs/internal/api/dto"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type userClaims struct{
-	User dto.User `json:"user"`
+	UserId string `json:"user_id"`
 	jwt.RegisteredClaims
 }
 
-func GeneRateJwt(user dto.User)(string , error){
+func GeneRateJwt(ID string)(string , error){
 	jwtKey := os.Getenv("JWT_SECRET")
 	if jwtKey == ""{
 		return "" , fmt.Errorf("NO secret key given")
 	}
 	claims:= userClaims{
-		User: user,
+		UserId:ID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt: jwt.NewNumericDate(time.Now()),

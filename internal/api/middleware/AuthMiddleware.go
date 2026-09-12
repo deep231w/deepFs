@@ -21,7 +21,7 @@ func AuthMiddleware(next http.Handler) http.Handler{
 			http.Error(w, "Token Verification failed / token expired" , http.StatusUnauthorized)
 		}
 
-		userId:= claims.User.ID
+		userId:= claims.UserId
 		ctx:= context.WithValue(
 			r.Context(),
 			"userId",
@@ -29,8 +29,5 @@ func AuthMiddleware(next http.Handler) http.Handler{
 		)
 		
 		next.ServeHTTP(w, r.WithContext(ctx))
-	})
-	
-    // w.WriteHeader(http.StatusOK)
-    // fmt.Fprintln(w, "token received")
+	})	
 }
