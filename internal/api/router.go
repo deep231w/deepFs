@@ -12,7 +12,7 @@ func Router(db *sql.DB) *http.ServeMux{
 	
 	routes.RegisterUsersRoute(mux)
 	routes.AuthRoutes(mux , db)
-	routes.Me(mux)
+	routes.Me(mux, db)
 	routes.LogOut(mux)
 	routes.AddGoogleAccount(mux)
 	return mux

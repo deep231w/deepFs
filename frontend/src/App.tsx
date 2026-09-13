@@ -29,23 +29,28 @@ function App() {
   }, [navigate]);
 
   async function nav() {
-    const res = await fetch("http://localhost:8080/api/v1/me", {
+    try{    
+      const res = await fetch("http://localhost:8080/api/v1/me", {
         credentials: "include",
-    });
+      });
+      console.log("res od me = ",  res);
+      
+      if (res.ok) {
+          // authenticated
+          setIsAuthenticated(true);
+          setIsLoading(false);
 
-    if (res.ok) {
-        // authenticated
-        setIsAuthenticated(true);
-        setIsLoading(false);
+          navigate("/dashboard");
+      } else {
+          // not authenticated
+          setIsAuthenticated(false);
+          setIsLoading(false);
 
-        navigate("/dashboard");
-    } else {
-        // not authenticated
-        setIsAuthenticated(false);
-        setIsLoading(false);
+          navigate("/signin");
+      }
+    }catch(e){
 
-        navigate("/signin");
-    }
+    } 
   }
   return (
     <main>
