@@ -1,7 +1,14 @@
 package handlers
 
-import "net/http"
+import (
+	"database/sql"
+	"net/http"
+)
 
-func AddGoogleAccount(w http.ResponseWriter , r *http.Request){
-	
+func AddGoogleAccount(w http.ResponseWriter, r *http.Request){
+		
+}
+
+func AddGoogleAccountCallback(w http.ResponseWriter, r *http.Request, db *sql.DB){
+
 }

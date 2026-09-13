@@ -2,9 +2,7 @@ package handlers
 
 import (
 	"context"
-	"crypto/rand"
 	"database/sql"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -16,18 +14,9 @@ import (
 	"github.com/DeepSystems/deepfs/internal/api/service"
 )
 
-func generateRandomState(len int)(string, error){
-	b:= make([]byte, len)
-	_ , err:= rand.Read(b)
-	if err != nil {
-		return "", err
-	}
-
-	return base64.URLEncoding.EncodeToString(b), nil
-}
 
 func GoogleLogin(w http.ResponseWriter , r * http.Request){
-	rstate, err := generateRandomState(32)
+	rstate, err := service.GenerateRandomState(32)
 	if err != nil {
 		http.Error(w, "State generation faoiled!!", http.StatusInternalServerError)
 		return
