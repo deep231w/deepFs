@@ -8,8 +8,12 @@ import QuickActions from '../components/QuickActions'
 import StorageManagement from '../components/StorageManagement'
 import SettingsTab from '../components/SettingsTab'
 import axios from 'axios'
+import type { UserData } from '../types/userData.type'
 
-export default function Dashboard() {
+interface DashboardProps {
+  userData: UserData | null;
+}
+export default function Dashboard({userData}:DashboardProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024)
   const [activeTab, setActiveTab] = useState('overview')
@@ -84,7 +88,7 @@ export default function Dashboard() {
             {activeTab === 'settings' && (
               <div className="animate-fade-in mx-auto w-full max-w-[880px] rounded-none border-0 bg-transparent p-0 shadow-none">
                 <h2 className="mb-3 text-2xl font-semibold tracking-[-0.05em] text-slate-800 md:mb-4 md:text-3xl">Settings</h2>
-                <SettingsTab />
+                <SettingsTab userData={userData}/>
               </div>
             )}
           </div>

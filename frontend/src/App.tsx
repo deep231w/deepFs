@@ -4,15 +4,16 @@ import { useEffect, useState } from 'react'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
 import type React from 'react'
+import type { UserData } from './types/userData.type'
 
-function ProtectedRoute({ children, isAuthenticated, isLoading }: { children: React.JSX.Element, isAuthenticated: boolean, isLoading: boolean }) {
+function ProtectedRoute({ children, isAuthenticated, isLoading }: { children: React.ReactNode, isAuthenticated: boolean, isLoading: boolean }) {
   if (isLoading) {
     return <div className="p-6">Loading...</div>
   }
   return isAuthenticated ? children : <Navigate to="/signin" replace />
 }
 
-function PublicRoute({ children, isAuthenticated, isLoading }: { children: React.JSX.Element, isAuthenticated: boolean, isLoading: boolean }) {
+function PublicRoute({ children, isAuthenticated, isLoading }: { children: React.ReactNode, isAuthenticated: boolean, isLoading: boolean }) {
   if (isLoading) {
     return <div className="p-6">Loading...</div>
   }
@@ -23,7 +24,7 @@ function App() {
   const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-
+  const [userData, setUserData] = useState<UserData | null>(null)
   useEffect(() => {
     nav()   
   }, [navigate]);
@@ -33,8 +34,8 @@ function App() {
       const res = await fetch("http://localhost:8080/api/v1/me", {
         credentials: "include",
       });
-      console.log("res od me = ",  res);
-      
+      let data = await res.json()
+      setUserData(data.user)
       if (res.ok) {
           // authenticated
           setIsAuthenticated(true);
@@ -55,7 +56,16 @@ function App() {
   return (
     <main>
       <Routes>
-        <Route path="/dashboard" element={<ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}><Dashboard /></ProtectedRoute>} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute 
+              isAuthenticated={isAuthenticated} 
+              isLoading={isLoading}
+            >
+              {userData && <Dashboard userData={userData}/>}
+            </ProtectedRoute>
+          } />
         <Route path="/signin" element={<PublicRoute isAuthenticated={isAuthenticated} isLoading={isLoading}><Auth /></PublicRoute>} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>

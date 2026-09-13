@@ -1,3 +1,5 @@
+import type { UserData } from "../types/userData.type"
+
 type ConnectedAccount = {
   email: string
   label: string
@@ -45,7 +47,9 @@ function PlusIcon() {
   )
 }
 
-export default function Settings() {
+export default function Settings({userData}:{userData:UserData| null}) {
+  
+  
   return (
     <div className="mx-auto w-full max-w-[760px] space-y-3 md:space-y-4">
       <div className="rounded-xl border border-[#efe3d4] bg-[#f7f3ee] p-3 shadow-none md:p-4">
@@ -64,7 +68,7 @@ export default function Settings() {
             <GoogleBadge />
             <div className="min-w-0">
               <p className="text-[11px] font-medium text-slate-500">Currently logged in as</p>
-              <p className="mt-1 truncate text-sm font-semibold text-slate-900 md:text-base">{ownerEmail}</p>
+              <p className="mt-1 truncate text-sm font-semibold text-slate-900 md:text-base">{userData?.email}</p>
             </div>
           </div>
         </div>
