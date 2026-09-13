@@ -26,13 +26,17 @@ export default function Sidebar({
       {/* Header */}
       <div className="px-5 py-5 flex items-center justify-between border-b border-slate-200 flex-shrink-0">
         <div className="flex items-center gap-3 whitespace-nowrap">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900 text-white">
-            <HardDrive size={18} />
-          </div>
+          <button className="flex h-11 w-13 items-center justify-center rounded-xl bg-slate-900 text-white"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+              <HardDrive size={18} />
+          </button>
           {sidebarOpen && <span className="text-xl font-semibold tracking-[-0.06em]">deepFs</span>}
         </div>
         <button
-          className="bg-slate-900 hover:bg-slate-700 text-white p-2 rounded-lg transition-colors flex-shrink-0"
+          className={`${sidebarOpen ? 
+            "":"hidden lg:block"
+          }bg-slate-900 hover:bg-slate-700 text-white p-2 rounded-lg transition-colors flex-shrink-0`}
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
           {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
