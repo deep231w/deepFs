@@ -41,6 +41,8 @@ func GoogleStorageLoginCallback(w http.ResponseWriter, r *http.Request, db *sql.
 
 	// Delete state cookie right away
 	http.SetCookie(w, &http.Cookie{Name: "oauth_state", Value: "", Path: "/", MaxAge: -1})
+
+	//get jwt token from oauth for verify user 
 	code:= r.URL.Query().Get("code")
 	googlecon:=config.GoogleAppConfig.GoogleLoginConfig
 	token, err:=googlecon.Exchange(context.Background() , code)
