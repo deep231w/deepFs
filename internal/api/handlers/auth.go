@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -34,7 +33,6 @@ func GoogleLogin(w http.ResponseWriter , r * http.Request){
 	})
 
 	url:= config.AppConfig.GoogleLoginConfig.AuthCodeURL(rstate)
-	fmt.Printf("app config = %v", config.AppConfig)
 	http.Redirect(w , r , url , http.StatusTemporaryRedirect)
 }
 

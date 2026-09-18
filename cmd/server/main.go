@@ -41,6 +41,7 @@ func main() {
 		log.Fatal(err, ", error loading env")
 	}
 	config.GoogleAuthConfig()
+	config.GoogleStorageAuthConfig()
 	db , err := database.ConnectDB()
 	if err != nil {
 		log.Fatal(err)

@@ -8,6 +8,7 @@ import type { UserData } from './types/userData.type'
 
 function ProtectedRoute({ children, isAuthenticated, isLoading }: { children: React.ReactNode, isAuthenticated: boolean, isLoading: boolean }) {
   if (isLoading) {
+    console.log("not authencitaed");
     return <div className="p-6">Loading...</div>
   }
   return isAuthenticated ? children : <Navigate to="/signin" replace />
@@ -36,6 +37,7 @@ function App() {
       });
       let data = await res.json()
       setUserData(data.user)
+      console.log("not authencitaed", data);
       if (res.ok) {
           // authenticated
           setIsAuthenticated(true);
@@ -43,6 +45,8 @@ function App() {
 
           navigate("/dashboard");
       } else {
+        console.log("not authencitaed");
+        
           // not authenticated
           setIsAuthenticated(false);
           setIsLoading(false);
@@ -50,8 +54,11 @@ function App() {
           navigate("/signin");
       }
     }catch(e){
-
-    } 
+      console.log("erroe is = ", e);
+      
+    } finally{
+      setIsLoading(false)
+    }
   }
   return (
     <main>

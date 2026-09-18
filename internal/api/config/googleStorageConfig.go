@@ -1,0 +1,29 @@
+package config
+
+import (
+	"os"
+
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+)
+
+type GConfig struct{
+	GoogleLoginConfig oauth2.Config
+}
+
+var GoogleAppConfig Config
+
+func GoogleStorageAuthConfig() oauth2.Config {
+    GoogleAppConfig.GoogleLoginConfig = oauth2.Config{
+        RedirectURL: os.Getenv("ADD_GOOGLE_ACCOUNT_AUTH_REDIRECT_URL"),
+        ClientID: os.Getenv("GOOGLE_CLIENT_ID"),
+        ClientSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
+        Scopes: []string{
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile",
+        },
+        Endpoint: google.Endpoint,
+    }
+
+    return GoogleAppConfig.GoogleLoginConfig
+}
