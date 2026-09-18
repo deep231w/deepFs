@@ -1,8 +1,10 @@
 import './App.css'
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Auth from './pages/Auth'
 import Dashboard from './pages/Dashboard'
+import ManageStoragePage from './pages/ManageStoragePage'
+import SettingsPage from './pages/SettingsPage'
 import type React from 'react'
 import type { UserData } from './types/userData.type'
 
@@ -23,56 +25,87 @@ function PublicRoute({ children, isAuthenticated, isLoading }: { children: React
 
 function App() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [userData, setUserData] = useState<UserData | null>(null)
+
   useEffect(() => {
-    nav()   
-  }, [navigate]);
+    nav()
+  }, [navigate])
 
   async function nav() {
-    try{    
+    try {
       const res = await fetch("http://localhost:8080/api/v1/me", {
         credentials: "include",
-      });
-      let data = await res.json()
+      })
+      const data = await res.json()
       setUserData(data.user)
-      console.log("not authencitaed", data);
+
       if (res.ok) {
-          // authenticated
-          setIsAuthenticated(true);
-          setIsLoading(false);
+        setIsAuthenticated(true)
+        setIsLoading(false)
 
-          navigate("/dashboard");
-      } else {
-        console.log("not authencitaed");
-        
-          // not authenticated
-          setIsAuthenticated(false);
-          setIsLoading(false);
-
-          navigate("/signin");
+        if (location.pathname === '/' || location.pathname === '/signin') {
+          navigate('/dashboard')
+        }
+        return
       }
-    }catch(e){
-      console.log("erroe is = ", e);
-      
-    } finally{
+
+      setIsAuthenticated(false)
+      setIsLoading(false)
+
+      if (location.pathname !== '/signin') {
+        navigate('/signin')
+      }
+    } catch (e) {
+      console.log("erroe is = ", e)
+      setIsAuthenticated(false)
+      setIsLoading(false)
+      if (location.pathname !== '/signin') {
+        navigate('/signin')
+      }
+    } finally {
       setIsLoading(false)
     }
   }
+
   return (
     <main>
       <Routes>
-        <Route 
-          path="/dashboard" 
+        <Route
+          path="/dashboard"
           element={
-            <ProtectedRoute 
-              isAuthenticated={isAuthenticated} 
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
               isLoading={isLoading}
             >
-              {userData && <Dashboard userData={userData}/>}
+              <Dashboard />
             </ProtectedRoute>
-          } />
+          }
+        />
+        <Route
+          path="/manage-storage"
+          element={
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isLoading={isLoading}
+            >
+              {userData && <ManageStoragePage />}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isLoading={isLoading}
+            >
+              {userData && <SettingsPage userData={userData} />}
+            </ProtectedRoute>
+          }
+        />
         <Route path="/signin" element={<PublicRoute isAuthenticated={isAuthenticated} isLoading={isLoading}><Auth /></PublicRoute>} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>

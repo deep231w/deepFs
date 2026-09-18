@@ -6,8 +6,6 @@ type ConnectedAccount = {
   status: string
 }
 
-const ownerEmail = 'deepak.owner@gmail.com'
-
 const connectedAccounts: ConnectedAccount[] = [
   { email: 'sarah.work@gmail.com', label: 'Work', status: 'Connected' },
   { email: 'alex.personal@gmail.com', label: 'Personal', status: 'Connected' },
@@ -48,7 +46,10 @@ function PlusIcon() {
 }
 
 export default function Settings({userData}:{userData:UserData| null}) {
-  
+  const handleAddGoogleAccount =()=>{
+    // navigate()
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}${'/api/v1/storage/addgoogleaccount'}`
+  }
   
   return (
     <div className="mx-auto w-full max-w-[760px] space-y-3 md:space-y-4">
@@ -80,6 +81,7 @@ export default function Settings({userData}:{userData:UserData| null}) {
           <button
             type="button"
             className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[10px] font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            onClick={handleAddGoogleAccount}
           >
             <span className="flex h-4 w-4 items-center justify-center rounded-full bg-slate-900 text-white">
               <PlusIcon />
@@ -111,6 +113,7 @@ export default function Settings({userData}:{userData:UserData| null}) {
           <button
             type="button"
             className="mt-1 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-slate-300 bg-[#f3efe9] px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50"
+            onClick={handleAddGoogleAccount}
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700">
               <PlusIcon />

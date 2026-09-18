@@ -4,7 +4,7 @@ interface SidebarProps {
   sidebarOpen: boolean
   setSidebarOpen: (open: boolean) => void
   activeTab: string
-  setActiveTab: (tab: string) => void
+  onNavigate: (path: string) => void
   onLogout: () => void
   isMobile: boolean
 }
@@ -13,7 +13,7 @@ export default function Sidebar({
   sidebarOpen,
   setSidebarOpen,
   activeTab,
-  setActiveTab,
+  onNavigate,
   onLogout,
   isMobile,
 }: SidebarProps) {
@@ -50,21 +50,21 @@ export default function Sidebar({
           label="Dashboard"
           active={activeTab === 'overview'}
           sidebarOpen={sidebarOpen}
-          onClick={() => setActiveTab('overview')}
+          onClick={() => onNavigate('/dashboard')}
         />
         <NavItem
           icon={<HardDrive size={18} />}
           label="Manage Storage"
           active={activeTab === 'storage'}
           sidebarOpen={sidebarOpen}
-          onClick={() => setActiveTab('storage')}
+          onClick={() => onNavigate('/manage-storage')}
         />
         <NavItem
           icon={<Settings size={18} />}
           label="Settings"
           active={activeTab === 'settings'}
           sidebarOpen={sidebarOpen}
-          onClick={() => setActiveTab('settings')}
+          onClick={() => onNavigate('/settings')}
         />
       </nav>
 
