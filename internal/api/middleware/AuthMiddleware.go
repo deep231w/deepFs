@@ -19,6 +19,7 @@ func AuthMiddleware(next http.Handler) http.Handler{
 		claims, err:=service.VerifyJwt(jwtToken.Value)
 		if err != nil {
 			http.Error(w, "Token Verification failed / token expired" , http.StatusUnauthorized)
+			return
 		}
 
 		userId:= claims.UserId

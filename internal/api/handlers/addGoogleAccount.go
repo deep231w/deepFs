@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	// "os"
+
 	"github.com/DeepSystems/deepfs/internal/api/config"
 	"github.com/DeepSystems/deepfs/internal/api/service"
 )
@@ -31,6 +33,14 @@ func GoogleStorageLogin(w http.ResponseWriter, r *http.Request){
 }
 
 func GoogleStorageLoginCallback(w http.ResponseWriter, r *http.Request, db *sql.DB){
+	userID, ok := r.Context().Value("userId").(int)
+    fmt.Println("User ID:", userID, r.Context())
+    if !ok {
+        http.Error(w, "User ID not found", http.StatusUnauthorized)
+        return
+    }
+
+
 	state:= r.URL.Query().Get("state")
 	cookie, err:= r.Cookie("google_storage") 
 	if err != nil || state != cookie.Value {
@@ -51,6 +61,18 @@ func GoogleStorageLoginCallback(w http.ResponseWriter, r *http.Request, db *sql.
 		return
 	}
 
+	// hashedRefreshToken, err:= service.Encrypt([]byte(token.RefreshToken), []byte(os.Getenv("GOOGLE_REFRESH_TOKEN_ENCRIPTION_KEY")))
+	// if err != nil {
+	// 	http.Error(w, "Token encription failed! / server error", http.StatusInternalServerError)
+	// 	return
+	// }
+
+	// hashedAccessToken, err := service.Encrypt([]byte(token.AccessToken), []byte(os.Getenv("GOOGLE_REFRESH_TOKEN_ENCRIPTION_KEY")))
+	// if err != nil {
+	// 	http.Error(w, "Token encription failed! / server error", http.StatusInternalServerError)
+	// 	return
+	// }
+	
 	// hashedRefreshToken:= Enc 
 	fmt.Println("add google account token: ", (token))
 }
